@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspection Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+</head>
+<body>
+    <h1>Dashboard</h1>
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="model-input.html">Model Input</a></li>
+                <li><a href="mass-inspection-plan.html">Mass Inspection Plan</a></li>
+                <li><a href="mass-inspection-plan-list.html">Mass Inspection Plan List</a></li>
+            <!--<li><a href="mass-inspection.html">Mass Inspection</a></li>-->
+                <li><a href="master-data-page.html">Master Data</a></li>
+                <!--<li><a href="monitoring.html">Monitoring</a></li>-->
+                <li><a class="five" href="specific-monitoring.html">Line Monitoring</a></li>
+            </ul>
+        </nav>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label for="modelFilter">Model:</label>
+                <select id="modelFilter">
+                    <option></option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="partNumberFilter">Part Number:</label>
+                <select id="partNumberFilter"></select>
+            </div>
+            <div class="filter-group">
+                <label for="vendorFilter">Vendor:</label>
+                <select id="vendorFilter"></select>
+            </div>
+            <div class="filter-group">
+                <label for="dateFromFilter">Date From:</label>
+                <input type="date" id="dateFromFilter">
+            </div>
+            <div class="filter-group">
+                <label for="dateToFilter">Date To:</label>
+                <input type="date" id="dateToFilter">
+            </div>
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <h3>Total Inspections</h3>
+                <div id="totalInspections" class="value">0</div>
+            </div>
+            <div class="metric-card">
+                <h3>Overall NG Rate</h3>
+                <div id="overallNGRate" class="value">0%</div>
+            </div>
+            <div class="metric-card">
+                <h3>Total OK</h3>
+                <div id="totalOK" class="value">0</div>
+            </div>
+            <div class="metric-card">
+                <h3>Total NG</h3>
+                <div id="totalNG" class="value">0</div>
+            </div>
+        </div>
+
+        <div class="charts-container">
+        <div class="charts-container1">
+            <div class="chart-box">
+                <canvas id="defectChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <canvas id="vendorChart"></canvas>
+            </div>
+                        <div class="chart-box">
+                <canvas id="modelChart"></canvas>
+            </div>
+        </div>
+        <div class="charts-container2">
+
+            <div class="chart-box2">
+                <canvas id="trendChart"></canvas>
+            </div>
+        </div>
+        </div>
+        <!--<button type="button" id="exportButton">Exportar</button>-->
+    </div>
+
+    <script src="dashboard-js.js"></script>
+    <script src="indexeddb.js"></script>
+    <script src="mass-inspection.js"></script>
+</body>
+</html>

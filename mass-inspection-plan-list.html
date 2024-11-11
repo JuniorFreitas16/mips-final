@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mass Inspection Plan List</title>
+    <link rel="stylesheet" href="list.css">
+</head>
+<body>
+    <h1>Inspection Plan List</h1>
+    <div class="container">
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="model-input.html">Model Input</a></li>
+            <li><a href="mass-inspection-plan.html">Mass Inspection Plan</a></li>
+            <!--<li><a href="mass-inspection.html">Mass Inspection</a></li>-->
+            <li><a href="inspection-dashboard.html">Inspection Dashboard</a></li>
+            <li><a href="master-data-page.html">Master Data</a></li>
+            <!--<li><a href="monitoring.html">Monitoring</a></li>-->
+            <li><a class="five" href="specific-monitoring.html">Line Monitoring</a></li>
+          </ul>
+        </nav>
+    <table id="plan-list-table">
+        <thead>
+            <tr>
+                <th>Plan Date</th>
+                <th>PO Code</th>
+                <th>Line</th>
+                <th>Part Number</th>
+                <th>Model</th>
+                <th>Vendor</th>
+                <th>Plan Qty</th>
+                <th>Part Type</th>
+                <th>Remark</th>
+                <th>Insp. Qty</th>
+                <th>OK</th>
+                <th>NG</th>
+                <th>Rate%</th>
+                <th>Plan Status</th>
+                <th>Actions</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    </div>
+    <script src="indexeddb.js"></script>
+    <script src="dashboard-js.js"></script>
+    <script src="mass-inspection-plan-list.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
+
+    <script>
+    function loadInspectionPlans() {
+    openDB().then(db => {
+        const transaction = db.transaction(["inspection_plans"], "readonly");
+        const store = transaction.objectStore("inspection_plans");
+        const request = store.getAll();
+
+        request.onsuccess = function(event) {
+            const plans = event.target.result;
+            const tableBody = document.querySelector("#plan-list-table tbody");
+            tableBody.innerHTML = ''; // Limpa a tabela antes de adicionar novos dados
+
+            plans.forEach(plan => {
+                const row = document.createElement("tr");
+                const inspectedQty = plan.inspected_qty || 0;
+                const okQty = plan.ok_qty || 0;
+                const ngQty = plan.ng_qty || 0;
+                const rate = plan.rate || '0%';
+                const status = inspectedQty >= plan.plan_qty ? 'Completo' : 'Em andamento';
+
+                row.innerHTML = `
+                    <td>${plan.plan_date}</td>
+                    <td>${plan.po_code}</td>
+                    <td>${plan.line}</td>
+                    <td>${plan.part_number}</td>
+                    <td>${plan.model}</td>
+                    <td>${plan.vendor}</td>
+                    <td>${plan.plan_qty}</td>
+                    <td>${plan.part_type}</td>
+                    <td>${plan.remark}</td>
+                    <td>${inspectedQty}</td>
+                    <td>${okQty}</td>
+                    <td>${ngQty}</td>
+                    <td>${rate}</td>
+                    <td>${status}</td>
+                    <td><button onclick="goToInspection(${plan.id})">Inspecionar</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        };
+
+        request.onerror = function(event) {
+            console.error("Erro ao carregar planos de inspeção:", event.target.error);
+        };
+    });
+}
+
+
+
+
+        // Redirect to Inspection Page with selected Plan
+        /*function goToInspection(planId) {
+        db.setItem('selectedPlanId', planId);
+        window.location.href = 'mass-inspection.html';
+        }*/
+
+            // Load Selected Plan for Inspection
+            function loadInspectionData() {
+            const planId = db.getItem('selectedPlanId');
+            const plans = JSON.parse(db.getItem('inspection_plans')) || [];
+            const plan = plans[planId];
+
+            if (plan) {
+                document.getElementById('model').textContent = plan.model;
+                document.getElementById('part_number').textContent = plan.partNumber;
+                document.getElementById('plan_qty').textContent = plan.planQty;
+                document.getElementById('inspectionProgress').textContent = '0'; // Initially 0
+                document.getElementById('ngRate').textContent = '0%'; // Initially 0%
+                document.getElementById('okCount').textContent = '0'; // Initially 0
+                document.getElementById('ngCount').textContent = '0'; // Initially 0
+            }
+            }
+
+
+        function goToInspection(planId) {
+                // Armazenar o ID do plano no localStorage
+                localStorage.setItem('selectedPlanId', planId);
+                // Redirecionar para a página de inspeção
+                window.location.href = 'mass-inspection.html';
+                }
+
+        document.addEventListener("DOMContentLoaded", function () {
+        loadInspectionPlans();
+    });
+/*
+    document.addEventListener('DOMContentLoaded', function() {
+    // Initialize table filter functionality
+    const table = document.querySelector('table');
+    const headers = table.querySelectorAll('th');
+    
+    // Add filter inputs to each header
+    headers.forEach(header => {
+        const filterInput = document.createElement('input');
+        filterInput.setAttribute('type', 'text');
+        filterInput.setAttribute('placeholder', `Filter ${header.textContent}`);
+        filterInput.classList.add('column-filter');
+        header.appendChild(filterInput);
+        
+        // Add filter event listener
+        filterInput.addEventListener('input', function() {
+            filterTable();
+        });
+    });
+    
+    function filterTable() {
+        const filters = Array.from(document.querySelectorAll('.column-filter'))
+            .map(input => input.value.toLowerCase());
+        
+        const rows = table.querySelectorAll('tbody tr');
+        
+        rows.forEach(row => {
+            const cells = Array.from(row.querySelectorAll('td'));
+            const shouldShow = cells.every((cell, index) => 
+                cell.textContent.toLowerCase().includes(filters[index])
+            );
+            row.style.display = shouldShow ? '' : 'none';
+        });
+    }
+    
+    // Excel export functionality
+    function exportToExcel() {
+        const ws = XLSX.utils.table_to_sheet(table);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Inspection Plans');
+        
+        // Apply table formatting
+        ws['!cols'] = Array(table.rows[0].cells.length).fill({ wch: 15 });
+        
+        XLSX.writeFile(wb, 'inspection_plans.xlsx');
+    }
+    
+    // Add export button
+    const exportButton = document.createElement('button');
+    exportButton.textContent = 'Export to Excel';
+    exportButton.classList.add('export-button');
+    exportButton.addEventListener('click', exportToExcel);
+    table.parentElement.insertBefore(exportButton, table);
+});*/
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mass Inspection</title>
+    <link rel="stylesheet" href="inspection.css">
+</head>
+<body>
+    <h1>Mass Inspection</h1>
+    <div class="container">
+        <nav class="navigation">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="model-input.html">Model Input</a></li>
+            <li><a href="mass-inspection-plan.html">Mass Inspection Plan</a></li>
+            <li><a href="mass-inspection-plan-list.html">Mass Inspection Plan List</a></li>
+            <li><a href="inspection-dashboard.html">Inspection Dashboard</a></li>
+            <li><a href="master-data-page.html">Master Data</a></li>
+            <li><a href="specific-monitoring.html">Line Monitoring</a></li>
+          </ul>
+        </nav>
+        <div class="model-info">
+                <p><strong>Model:</strong> <span id="model-in-insp"></span></p>
+                <p><strong>Part Number:</strong> <span id="partnumber-in-insp"></span></p>
+        </div>
+
+        <div class="dashboard">
+            <div class="dashboarditems">
+                <div class="dashbox">
+                    <p>Model Plan</p>
+                    <h2 id="model-plan"></h2>
+                </div>
+                <div class="dashbox">
+                    <p>Inspection Progress</p>
+                    <h2 id="inspection-progress"></h2>
+                </div>
+                <div class="dashbox">
+                    <p>Rate</p>
+                    <h2 id="rate"></h2>
+                </div>
+                <div class="dashbox">
+                    <p>OK</p>
+                    <h2 id="ok-count"></h2>
+                </div>
+                <div class="dashbox">
+                    <p>NG</p>
+                    <h2 id="ng-count"></h2>
+                </div>
+            </div>
+        </div>
+
+        <form id="inspection-form">
+            <fieldset class="form1">
+            <label for="date">Date:</label>
+            <input type="text" id="date" name="date" readonly><br>
+
+            <label for="time">Time:</label>
+            <input type="text" id="time" name="time" readonly><br>
+
+            <label for="part_number">Part Number:</label>
+            <input type="text" id="part_number" name="part_number" readonly><br>
+
+            <label for="model">Model:</label>
+            <input type="text" id="model" name="model" readonly><br>
+
+            <input type="text" id="line" name="line" style="display: none;" readonly><br>
+
+            <!--<label for="vendor">Vendor:</label>-->
+            <input type="hidden" id="vendor" name="vendor" readonly><br>
+
+            <input type="text" id="po_code" name="po_code" style="display: none;" readonly><br>
+
+            <!--<label for="part_type">Part Type:</label>-->
+            <input type="hidden" id="part_type" name="part_type" readonly><br>
+
+            <label for="serial_number">Serial Number:</label>
+            <input type="text" id="serial_number" name="serial_number" required><br>
+
+            <label for="status">Status:</label>
+            <select id="status" name="status" required>
+                <option value="OK">OK</option>
+                <option value="NG">NG</option>
+            </select><br>
+        </fieldset>
+        <div class="form2" style="display: flex; flex-direction: row; justify-content: center;">
+            <fieldset id="ng-fields" style="display:none;">
+            <div>
+                <div style="display: flex; flex-direction: row; flex:1;">
+                    <label for="defect">Defect:</label>
+                    <input type="text" id="defect" name="defect"><br>
+
+                    <label for="part">Part:</label>
+                    <input type="text" id="part" name="part"><br>
+
+                    <label for="area">Zone:</label>
+                    <select id="area" onclick="toggleZoneSelector()">
+                        <option value="" id="valueZone">   </option>
+                    </select>
+
+                    <label for="photo">Photo:</label>
+                    <input type="file" id="photo" accept="image/*" onchange="handleImageSelect(event)">
+                    <input type="hidden" id="photoBase64">
+                    <!--<img id="imagePreview" style="display: none; max-width: 200px; margin-top: 10px;">--><br>
+                </div><br>
+                <div style="display: flex; flex-direction: row;">
+                    <label for="defect2">Defect:</label>
+                    <input type="text" id="defect2" name="defect2"><br>
+
+                    <label for="part2">Part:</label>
+                    <input type="text" id="part2" name="part2"><br>
+
+                    <label for="area2">Zone:</label>
+                    <select id="area2" onclick="toggleZoneSelector2()">
+                        <option value="" id="valueZone2">   </option>
+                    </select>
+
+                    <label for="photo2">Photo:</label>
+                    <input type="file" id="photo2" accept="image/*" onchange="handleImageSelect2(event)">
+                    <input type="hidden" id="photoBase64-2">
+                    <!--<img id="imagePreview2" style="display: none; max-width: 200px; margin-top: 10px;">--><br>
+                </div>
+            </div>
+            </fieldset>
+        </div>
+            <button class="savebt" type="submit">Save Item</button>
+        </form>
+
+        <table id="inspection-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Part Number</th>
+                    <th>Model</th>
+                    <th>Line</th>
+                    <th>Vendor</th>
+                    <th>PO</th>
+                    <th>Part Type</th>
+                    <th>Serial Number</th>
+                    <th>Status</th>
+                    <th>Defect</th>
+                    <th>Part</th>
+                    <th>Zone</th>
+                    <th>Defect</th>
+                    <th>Part</th>
+                    <th>Zone</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script src="indexeddb.js"></script>
+    <script src="mass-inspection.js"></script>
+    <script src="dashboard-js.js"></script>
+
+        <!--Alerts------------------------------------------------>
+        <div id="alert-message" class="alert-message" style="display: none;"></div>
+
+        <!--edit modal-------------------------------------------->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Inspection Edit</h2>
+                <form id="edit-form">
+                    <input type="hidden" id="edit-id">
+                    <label for="edit-serial_number">Serial Number:</label>
+                    <input type="text" id="edit-serial_number" required>
+
+                    <label for="edit-status">Status:</label>
+                    <select id="edit-status" required>
+                        <option value="OK">OK</option>
+                        <option value="NG">NG</option>
+                    </select>
+
+                    <div id="edit-ng-fields" style="display:none;">
+                        <label for="edit-defect">Defect:</label>
+                        <input type="text" id="edit-defect">
+
+                        <label for="edit-part">Part:</label>
+                        <input type="text" id="edit-part">
+
+                        <label for="edit-area">Zone:</label>
+                        <!--<input type="text" id="edit-area">-->
+                        <select id="edit-area" required>
+                            <option value=""></option>
+                            <option value="zoneSelector">Select a zone</option>
+                        </select>
+                    </div>
+
+                    <button type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+
+        <!--Zone Selector---------------------------------------->
+        <div id="zoneSelector" class="zoneSelector" style="display: none;">
+                <div>
+                    <span class="closer">&times;</span>
+                    <h2>Zone Selector</h2>
+                </div>
+                <div class="grid">
+
+                <!-- 16 zonas em uma grade 4x4 -->
+                <div class="zone" data-zone="4">4</div>
+                <div class="zone" data-zone="3">3</div>
+                <div class="zone" data-zone="2">2</div>
+                <div class="zone" data-zone="1">1</div>
+                <div class="zone" data-zone="8">8</div>
+                <div class="zone" data-zone="7">7</div>
+                <div class="zone" data-zone="6">6</div>
+                <div class="zone" data-zone="5">5</div>
+                <div class="zone" data-zone="12">12</div>
+                <div class="zone" data-zone="11">11</div>
+                <div class="zone" data-zone="10">10</div>
+                <div class="zone" data-zone="9">9</div>
+                <div class="zone" data-zone="16">16</div>
+                <div class="zone" data-zone="15">15</div>
+                <div class="zone" data-zone="14">14</div>
+                <div class="zone" data-zone="13">13</div>
+            </div>
+        </div>
+        <div style="display: none;">
+            <p>Zona selecionada: <span id="selectedZone"></span></p>
+        </div>
+                <!--Zone Selector2---------------------------------------->
+                <div id="zoneSelector2" class="zoneSelector2" style="display: none;">
+                    <div>
+                        <span class="closer">&times;</span>
+                        <h2>Zone Selector2</h2>
+                    </div>
+                    <div class="grid">
+    
+                    <!-- 16 zonas em uma grade 4x4 -->
+                    <div class="zone2" data-zone2="4">4</div>
+                    <div class="zone2" data-zone2="3">3</div>
+                    <div class="zone2" data-zone2="2">2</div>
+                    <div class="zone2" data-zone2="1">1</div>
+                    <div class="zone2" data-zone2="8">8</div>
+                    <div class="zone2" data-zone2="7">7</div>
+                    <div class="zone2" data-zone2="6">6</div>
+                    <div class="zone2" data-zone2="5">5</div>
+                    <div class="zone2" data-zone2="12">12</div>
+                    <div class="zone2" data-zone2="11">11</div>
+                    <div class="zone2" data-zone2="10">10</div>
+                    <div class="zone2" data-zone2="9">9</div>
+                    <div class="zone2" data-zone2="16">16</div>
+                    <div class="zone2" data-zone2="15">15</div>
+                    <div class="zone2" data-zone2="14">14</div>
+                    <div class="zone2" data-zone2="13">13</div>
+                </div>
+            </div>
+        <div style="display: none;">
+            <p>Zona selecionada: <span id="selectedZone2"></span></p>
+        </div>
+    <script>
+            //Função para selecionar zona com defeito
+            function toggleZoneSelector() {
+                const select = document.getElementById('area');
+                const zoneSelector = document.getElementById('zoneSelector');
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const zoneSelector = document.getElementById('zoneSelector');
+                const selectedZoneSpan = document.getElementById('selectedZone');
+            //Open Zone Selector
+            document.querySelector('#area').onclick = function() {
+            document.getElementById('zoneSelector').style.display = 'block';
+            };
+
+            // Fechar o seletor quando clicar no X
+            document.querySelector('#zoneSelector .closer').onclick = function() {
+                document.getElementById('zoneSelector').style.display = 'none';
+            };
+
+            // Fechar o seletor quando clicar fora dele
+            window.onclick = function(event) {
+                const zoneClose = document.getElementById('zoneSelector');
+                if (event.target == zoneClose) {
+                    zoneClose.style.display = 'none';
+                }
+            };
+
+            //Zonas de seleção
+                zoneSelector.addEventListener('click', function(event) {
+                    if (event.target.classList.contains('zone')) {
+                        const zones = zoneSelector.querySelectorAll('.zone');
+                        zones.forEach(zone => zone.classList.remove('selected'));
+
+                        event.target.classList.add('selected');
+                        const selectedZone = event.target.getAttribute('data-zone');
+                        selectedZoneSpan.textContent = selectedZone;
+
+
+                        console.log('Zona selecionada:', selectedZone);
+                        document.getElementById("valueZone").value = selectedZone;
+                        document.getElementById("valueZone").textContent = selectedZone;
+                        document.getElementById('zoneSelector').style.display = 'none';
+                    }
+                });
+            });
+            
+            ///////////////////////////////////////////////////////////////////////////////////////
+
+            //Função para selecionar zona com defeito 2
+            function toggleZoneSelector2() {
+                const select2 = document.getElementById('area2');
+                const zoneSelector2 = document.getElementById('zoneSelector2');
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const zoneSelector2 = document.getElementById('zoneSelector2');
+                const selectedZoneSpan2 = document.getElementById('selectedZone2');
+            //Open Zone Selector
+            document.querySelector('#area2').onclick = function() {
+            document.getElementById('zoneSelector2').style.display = 'block';
+            };
+
+            // Fechar o seletor quando clicar no X
+            document.querySelector('#zoneSelector2 .closer').onclick = function() {
+                document.getElementById('zoneSelector2').style.display = 'none';
+            };
+
+            // Fechar o seletor quando clicar fora dele
+            window.onclick = function(event) {
+                const zoneClose2 = document.getElementById('zoneSelector2');
+                if (event.target == zoneClose2) {
+                    zoneClose2.style.display = 'none';
+                }
+            };
+
+            //Zonas de seleção
+                zoneSelector2.addEventListener('click', function(event) {
+                    if (event.target.classList.contains('zone2')) {
+                        const zones2 = zoneSelector2.querySelectorAll('.zone2');
+                        zones2.forEach(zone2 => zone2.classList.remove('selected2'));
+
+                        event.target.classList.add('selected2');
+                        const selectedZone2 = event.target.getAttribute('data-zone2');
+                        selectedZoneSpan2.textContent = selectedZone2;
+
+
+                        console.log('Zona selecionada:', selectedZone2);
+                        document.getElementById("valueZone2").value = selectedZone2;
+                        document.getElementById("valueZone2").textContent = selectedZone2;
+                        document.getElementById('zoneSelector2').style.display = 'none';
+                    }
+                });
+            });
+    </script>
+</body>
+
+</html>

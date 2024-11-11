@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Line Monitoring Dashboard</title>
+    <link rel="stylesheet" href="specific.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    
+    
+
+</head>
+<body>
+    <h1>Line Monitoring</h1>
+    <div class="container">
+        <!-- Navigation -->
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="model-input.html">Model Input</a></li>
+                <li><a href="mass-inspection-plan.html">Mass Inspection Plan</a></li>
+                <li><a href="mass-inspection-plan-list.html">Inspection Plan List</a></li>
+                <li><a href="inspection-dashboard.html">Inspection Dashboard</a></li>
+                <li><a href="master-data-page.html">Master Data</a></li>
+                <!--<li><a href="monitoring.html">General Monitoring</a></li>-->
+            </ul>
+        </nav>
+
+        <!-- Filters Section -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <select id="lineFilter" class="filter" aria-placeholder="">
+                    <option value="">Select Line</option>
+                    <option value="L1">L1</option>
+                    <option value="L2">L2</option>
+                </select>
+                <input type="date" id="dateFilter" class="filter">
+                <input type="text" id="modelFilter" class="filter autocomplete" placeholder="Model">
+                <input type="text" id="partNumberFilter" class="filter autocomplete" placeholder="Part Number">
+                <input type="text" id="poFilter" class="filter autocomplete" placeholder="PO">
+            </div>
+            <button id="applyFilters">Apply Filters</button>
+        </div>
+
+        <!-- Selected Plan Information -->
+        <div id="selectedPlanInfo" class="selected-plan-info">
+            <p><strong>Line:</strong> <span id="selectedLine"></span></p>
+            <p><strong>Model:</strong> <span id="selectedModel"></span></p>
+            <p><strong>Part Number:</strong> <span id="selectedPartNumber"></span></p>
+            <p><strong>PO:</strong> <span id="selectedPO"></span></p>
+           <!-- <p><strong>Plan Date:</strong> <span id="selectedDate"></span></p>
+            <p><strong>Plan Quantity:</strong> <span id="selectedPlanQty"></span></p>-->
+        </div>
+
+        <!-- Dashboard Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-box">
+                <h3>Total Inspections</h3>
+                <p id="totalInspections">0</p>
+            </div>
+            <div class="metric-box">
+                <h3>OK Count</h3>
+                <p id="okCount">0</p>
+            </div>
+            <div class="metric-box">
+                <h3>NG Count</h3>
+                <p id="ngCount">0</p>
+            </div>
+            <div class="metric-box">
+                <h3>NG Rate</h3>
+                <p id="ngRate">0.00%</p>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-grid">
+            <div class="chart-container">
+                <canvas id="defectsChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="partsChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="areasChart"></canvas>
+            </div>
+
+        </div>
+    </div>
+    
+    <script src="indexeddb.js"></script>
+    <script src="specific-monitoring.js"></script>
+
+</body>
+</html>

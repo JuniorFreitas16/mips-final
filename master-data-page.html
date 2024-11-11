@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Data</title>
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">-->
+    <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link href="master-data.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <h1 class="text-3xl font-bold mb-6">Master Data</h1>
+    <div class="container mx-auto px-4 py-8">
+        
+        <nav class="mb-8">
+            <ul class="flex space-x-4">
+                <li><a href="index.html" class="text-blue-600 hover:text-blue-800">Home</a></li>
+                <li><a href="model-input.html" class="text-blue-600 hover:text-blue-800">Model Input</a></li>
+                <li><a href="mass-inspection-plan.html" class="text-blue-600 hover:text-blue-800">Mass Inspection Plan</a></li>
+                <li><a href="mass-inspection-plan-list.html" class="text-blue-600 hover:text-blue-800">Mass Inspection Plan List</a></li>
+                <li><a href="inspection-dashboard.html" class="text-blue-600 hover:text-blue-800">Inspection Dashboard</a></li>
+                <!--<li><a href="monitoring.html">Monitoring</a></li>-->
+                <li><a class="five" href="specific-monitoring.html">Line Monitoring</a></li>
+            </ul>
+        </nav>
+
+        
+
+        <div class="filter-section">
+            <div class="filter-group">
+                    <label for="dateFromFilterMaster">Date From:</label>
+                    <input type="date" id="dateFromFilterMaster">
+
+                    <label for="dateToFilterMaster">Date To:</label>
+                    <input type="date" id="dateToFilterMaster">
+                <!--<div class="filter-item">-->
+                    <!--<label class="block text-sm font-medium text-gray-700">Date Range</label>
+                    <input type="text" id="daterange" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">-->
+                <!--</div>-->
+                <!--<div class="filter-item">-->
+                    <label class="block text-sm font-medium text-gray-700">Model</label>
+                    <select id="modelFilter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <option value="">All</option>
+                    </select>
+                <!--</div>-->
+                <!--<div class="filter-item">-->
+                    <label class="block text-sm font-medium text-gray-700">Part Number</label>
+                    <select id="partNumberFilter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <option value="">All</option>
+                    </select>
+                <!--</div>-->
+            <!--</div>-->
+            
+            <!--<div class="filter-group">-->
+                <!--<div class="filter-item">-->
+                    <label class="block text-sm font-medium text-gray-700">Part Type</label>
+                    <select id="partTypeFilter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <option value="">All</option>
+                    </select>
+               <!--</div>-->
+                <!--<div class="filter-item">-->
+                    <label class="block text-sm font-medium text-gray-700">Defect</label>
+                    <select id="defectFilter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <option value="">All</option>
+                    </select>
+                <!--</div>-->
+                <!--<div class="filter-item">-->
+                    <label class="block text-sm font-medium text-gray-700">Vendor</label>
+                    <select id="vendorFilter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <option value="">All</option>
+                    </select>
+               <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="filter-group">-->
+                <!--<div class="filter-item">-->
+                    <label class="block text-sm font-medium text-gray-700">Serial Number</label>
+                    <input type="text" id="serialNumberFilter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+             </div>
+                <div class="filter-item flex items-end">
+                    <button id="exportBtn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                        Export to Excel
+                    </button>
+                </div>
+            </div>
+        
+
+        <div class="table-container bg-white rounded-lg shadow">
+            <table id="masterDataTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Part Number</th>
+                        <th>Model</th>
+                        <th>Line</th>
+                        <th>Vendor</th>
+                        <th>Part Type</th>
+                        <th>Serial Number</th>
+                        <th>Status</th>
+                        <th>Defect</th>
+                        <th>Part</th>
+                        <th>Zone</th>
+                        <th>Photo</th>
+                        <th>Defect</th>
+                        <th>Part</th>
+                        <th>Zone</th>
+                        <th>Photo2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="master-data-js.js"></script>
+    <script src="indexeddb.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+</body>
+</html>

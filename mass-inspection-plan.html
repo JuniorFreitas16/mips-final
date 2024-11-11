@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mass Inspection Plan</title>
+    <link rel="stylesheet" href="plan.css">
+</head>
+<body>
+    <h1>Mass Inspection Plan</h1>
+    <div class="container">
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="model-input.html">Model Input</a></li>
+            <li><a href="mass-inspection-plan-list.html">Mass Inspection Plan List</a></li>
+            <!--<li><a href="mass-inspection.html">Mass Inspection</a></li>-->
+            <li><a href="inspection-dashboard.html">Inspection Dashboard</a></li>
+            <li><a href="master-data-page.html">Master Data</a></li>
+            <!--<li><a href="monitoring.html">Monitoring</a></li>-->
+            <li><a class="five" href="specific-monitoring.html">Line Monitoring</a></li>
+          </ul>
+        </nav>
+    <form id="plan-form">
+        <label for="plan_date">Plan Date:</label>
+        <input type="date" id="plan_date" name="plan_date" required>
+
+        <label for="po_code">PO Code:</label>
+        <input type="text" id="po_code" name="po_code" readonly>
+
+        <label for="line">Line:</label>
+        <select id="line" name="line" required>
+            <option value="L1">L1</option>
+            <option value="L2">L2</option>
+          </select>
+
+        <label for="part_number">Part Number:</label>
+        <!--<input  id="part_number" name="part_number" required>-->
+        <input list="part-number-list" id="part_number" name="part_number" required>
+        <datalist id="part-number-list"></datalist>
+
+        <label for="model" >Model:</label>
+        <!--<input type="text" id="model" name="model" readonly>-->
+        <select id="model" name="model" required>
+            <option></option>
+        </select>
+
+        <label for="vendor">Vendor:</label>
+        <!--<input type="text" id="vendor" name="vendor" required>-->
+        <select id="vendor" name="vendor" required>
+            <option></option>
+        </select>
+
+        <label for="plan_qty">Plan Qty:</label>
+        <input type="number" id="plan_qty" name="plan_qty" required>
+
+        <label for="part_type">Part Type:</label>
+        <!--<input type="text" id="part_type" name="part_type" readonly>-->
+        <select id="part_type" name="part_type" required>
+            <option></option>
+        </select>
+
+        <label for="box_qty">Box Quantity:</label>
+        <input type="number" id="box_qty" name="box_qty" required>
+
+        <label for="remark">Remark:</label>
+        <textarea id="remark" name="remark"></textarea><br>
+
+        <button type="submit">Save Plan</button>
+    </form>
+    </div>
+
+
+    <script>
+        //Date generator
+        const now = new Date();
+        now.setHours(now.getUTCHours() - 8);
+
+            document.getElementById('plan_date').value = now.toISOString().substring(0,10);   /*new Date().toISOString().split('T')[0];*/
+
+        // P.O code generation
+            document.addEventListener("DOMContentLoaded", function() {
+            const poInput = document.getElementById("po");
+
+            function generatePO() {
+                const date = now/*new Date()*/;
+                const formattedDate = date.toISOString().replace(/[-T:.Z]/g, '').substring(0, 14);
+                const sequence = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+                return formattedDate + sequence;
+            }
+
+            po_code.value = generatePO();
+        });
+
+
+        const planForm = document.getElementById("plan-form");
+
+        planForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const planData = {
+                plan_date: document.getElementById("plan_date").value,
+                po_code: document.getElementById("po_code").value,
+                line: document.getElementById("line").value,
+                part_number: document.getElementById("part_number").value,
+                model: document.getElementById("model").value,
+                vendor: document.getElementById("vendor").value,
+                plan_qty: parseInt(document.getElementById("plan_qty").value),
+                part_type: document.getElementById("part_type").value,
+                box_qty: parseInt(document.getElementById("box_qty").value),
+                remark: document.getElementById("remark").value,
+                planId: document.getElementById("po_code").value
+            };
+
+            savePlanToDB(planData)
+                .then(() => {
+                    alert('Plan saved successfully!');
+                    e.target.reset();
+                })
+                .catch((error) => {
+                    console.error("Error saving plan:", error);
+                    alert('Error saving plan. Please try again.');
+                });
+        });
+
+        document.getElementById('part_number').addEventListener('input', function(e) {
+        const partNumber = e.target.value;
+
+        if (!partNumber) {
+            clearFields();
+            return;
+        }
+
+        openDB().then(db => {
+            const transaction = db.transaction(["models"], "readonly");
+            const store = transaction.objectStore("models");
+            const index = store.index("part_number");
+            const request = index.getAll(partNumber);
+
+            request.onsuccess = function(event) {
+                const models = event.target.result;
+                const modelSelect = document.getElementById('model');
+
+                // Limpa as opções existentes
+                modelSelect.innerHTML = '<option value=""></option>';
+
+                if (models && models.length > 0) {
+                    models.forEach(model => {
+                        const option = document.createElement('option');
+                        option.value = model.model;
+                        option.textContent = model.model;
+                        modelSelect.appendChild(option);
+                    });
+
+                    // Preencher outros campos relacionados
+                    document.getElementById('vendor').value = models[0].vendor;
+                    document.getElementById('part_type').value = models[0].part_type;
+                    document.getElementById('box_qty').value = models[0].box_qty;
+                }
+            };
+
+            request.onerror = function(event) {
+                console.error("Error loading models:", event.target.error);
+            };
+        });
+    });
+
+   /* function clearFields() {
+        document.getElementById('model').innerHTML = '<option value="">Select a model</option>';
+        document.getElementById('vendor').value = '';
+        document.getElementById('part_type').value = '';
+        document.getElementById('box_qty').value = '';
+    } */
+    </script>
+    <script src="indexeddb.js"></script>
+    <script src="dashboard-js.js"></script>
+</body>
+</html>

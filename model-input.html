@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Input</title>
+    <link rel="stylesheet" href="input.css">
+</head>
+<body>
+    <h1>Model Input</h1>
+    <div class="container">
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="mass-inspection-plan.html">Input Mass Inspection Plan</a></li>
+            <li><a href="mass-inspection-plan-list.html">Mass Inspection Plan List</a></li>
+            <!--<li><a href="mass-inspection.html">Mass Inspection</a></li>-->
+            <li><a href="inspection-dashboard.html">Inspection Dashboard</a></li>
+            <li><a href="master-data-page.html">Master Data</a></li>
+            <!--<li><a href="monitoring.html">Monitoring</a></li>-->
+            <li><a class="five" href="specific-monitoring.html">Line Monitoring</a></li>
+          </ul>
+        </nav>
+    <form id="model-form">
+        <label for="plant">Plant:</label>
+        <select id="plant" name="plant" required>
+            <option value="P81A">P81A</option>
+            <option value="P81B">P81B</option>
+            <option value="P81D">P81D</option>
+            <option value="P82A">P82A</option>
+          </select>
+
+        <label for="part_type">Part Type:</label>
+        <select id="part_type" name="part_Type" required>
+            <option value="OPEN CELL">OPEN CELL</option>
+            <option value="PANEL">PANEL</option>
+        </select>
+
+        <label for="part_number">Part Number:</label>
+        <input type="text" id="part_number" name="part_number" required>
+
+        <label for="model">Model:</label>
+        <input type="text" id="modelinp" name="modelinp" onfocus="generateModelVersion()" required>
+
+        <!--<label for="version">Version:</label>
+        <input type="text" id="version" name="version" onblur="generateModelVersion()" required>
+
+        <input type="hidden" id="modelversion" name="modelversion" readonly>-->
+
+        <label for="vendorinp">Vendor:</label>
+        <select id="vendorinp" name="vendorinp" required>
+            <option value="SAMEX">SAMEX</option>
+            <option value="SEHC">SEHC</option>
+            <option value="CSOT">CSOT</option>
+            <option value="HKC">HKC</option>
+            <option value="AUO">AUO</option>
+            <option value="SDPJ">SDPJ</option>
+            <option value="SDPC">SDPC</option>
+            <option value="BOE">BOE</option>
+            <option value="CHOT">CHOT</option>
+            <option value="LGD">LGD</option>
+            <option value="INNOLUX">INNOLUX</option>
+          </select>
+
+        <label for="box_qty">Box Quantity:</label>
+        <input type="number" id="box_qty" name="box_qty" required><br>
+
+        <button type="submit">Save Model</button>
+    </form>
+    </div>
+    <script src="indexeddb.js"></script>
+    <script src="dashboard-js.js"></script>
+    <script>
+       /* // modelversion code generation
+        function generateModelVersion() {
+            const modelcode = document.getElementById("modelinp").value;
+            const versioncode = document.getElementById("version").value;
+            const code = modelcode + versioncode;
+            document.getElementById("modelversion").value = code;
+        }
+
+        document.getElementById("version").addEventListener("input", generateModelVersion);*/
+
+        const modelForm = document.getElementById("model-form");
+
+        modelForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const modelData = {
+                plant: document.getElementById("plant").value,
+                part_type: document.getElementById("part_type").value,
+                part_number: document.getElementById("part_number").value,
+                model: document.getElementById("modelinp").value,
+                /*version: document.getElementById("version").value,
+                modelversion: document.getElementById("modelversion").value,*/
+                vendor: document.getElementById("vendorinp").value,
+                box_qty: parseInt(document.getElementById("box_qty").value)
+            };
+
+            saveModelToDB(modelData);
+            alert('Model saved successfully!');
+            event.target.reset();
+        });
+    </script>
+</body>
+</html>
