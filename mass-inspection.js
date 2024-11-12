@@ -98,8 +98,10 @@ function loadInspectionPlan(planId) {
                 document.getElementById('ng-count').textContent = plan.ng_qty || '0';
                 
                 // Atualizar o cabeçalho
+                document.getElementById('line-in-insp').textContent = plan.line;
                 document.getElementById('model-in-insp').textContent = plan.model;
                 document.getElementById('partnumber-in-insp').textContent = plan.part_number;
+                document.getElementById('po-in-insp').textContent = plan.po_code;
                 loadInspections();
             }
         };
@@ -206,7 +208,6 @@ function loadInspections() {
                     <td>${inspection.model}</td>
                     <td>${inspection.line}</td>
                     <td>${inspection.vendor}</td>
-                    <td>${inspection.po_code}</td>
                     <td>${inspection.part_type}</td>
                     <td>${inspection.serial_number}</td>
                     <td>${inspection.status}</td>
@@ -310,7 +311,7 @@ document.getElementById("inspection-form")?.addEventListener("submit", function(
                 }, 2000);
             }
 
-            /*location.reload();*/
+            location.reload();
         })
         .catch(error => {
             console.error("Erro ao salvar inspeção:", error);
