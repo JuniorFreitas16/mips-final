@@ -23,7 +23,7 @@ body {
 }
 
 .container {
-  width: 80%;
+  width: 95%;
   height: 100%;
   margin: auto;
   padding: 20px;
@@ -67,27 +67,32 @@ nav ul li a {
 }
 
 a.one{
-  padding: 2% 45%;
+  padding: 1em 10em;
   border-radius: 8px;
 }
 
 a.two{
-  padding: 2% 40%;
+  padding: 1em 10em;
   border-radius: 8px;
 }
 
 a.three{
-  padding: 2% 40%;
+  padding: 1em 10em;
   border-radius: 8px;
 }
 
 a.four{
-  padding: 2% 45%;
+  padding: 1em 10em;
   border-radius: 8px;
 }
 
 a.five{
-  padding: 2% 45%;
+  padding: 1em 10em;
+  border-radius: 8px;
+}
+
+a.six{
+  padding: 1em 10em;
   border-radius: 8px;
 }
 
