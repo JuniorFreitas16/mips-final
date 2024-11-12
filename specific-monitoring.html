@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Line Monitoring Dashboard</title>
+    <title>MASS INSPECTION REAL-TIME MONITORING</title>
     <link rel="stylesheet" href="specific.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -20,7 +20,7 @@
 
 </head>
 <body>
-    <h1>Line Monitoring</h1>
+    <h1>MASS INSPECTION REAL-TIME MONITORING</h1>
     <div class="container">
         <!-- Navigation -->
         <nav>
@@ -29,9 +29,8 @@
                 <li><a href="model-input.html">Model Input</a></li>
                 <li><a href="mass-inspection-plan.html">Mass Inspection Plan</a></li>
                 <li><a href="mass-inspection-plan-list.html">Inspection Plan List</a></li>
-                <li><a href="inspection-dashboard.html">Inspection Dashboard</a></li>
                 <li><a href="master-data-page.html">Master Data</a></li>
-                <!--<li><a href="monitoring.html">General Monitoring</a></li>-->
+                <li><a href="inspection-dashboard.html">Mass Inspection Dashboard</a></li>
             </ul>
         </nav>
 
@@ -53,31 +52,46 @@
 
         <!-- Selected Plan Information -->
         <div id="selectedPlanInfo" class="selected-plan-info">
-            <p><strong>Line:</strong> <span id="selectedLine"></span></p>
-            <p><strong>Model:</strong> <span id="selectedModel"></span></p>
-            <p><strong>Part Number:</strong> <span id="selectedPartNumber"></span></p>
-            <p><strong>PO:</strong> <span id="selectedPO"></span></p>
-           <!-- <p><strong>Plan Date:</strong> <span id="selectedDate"></span></p>
-            <p><strong>Plan Quantity:</strong> <span id="selectedPlanQty"></span></p>-->
+            <div class="info-items">
+                <div class="info-box">
+                    <p><strong>Line:</strong> <span id="selectedLine"></span></p>
+                </div>
+                <div class="info-box">
+                    <p><strong>Model:</strong> <span id="selectedModel"></span></p>
+                </div>
+                <div class="info-box">
+                    <p><strong>Part Number:</strong> <span id="selectedPartNumber"></span></p>
+                </div>
+                <div class="info-box">
+                    <p><strong>PO:</strong> <span id="selectedPO"></span></p>
+                </div>
+            </div>
         </div>
-
         <!-- Dashboard Metrics -->
         <div class="metrics-grid">
             <div class="metric-box">
-                <h3>Total Inspections</h3>
-                <p id="totalInspections">0</p>
+                <div class="info-total">
+                    <h3>Total Inspections</h3>
+                    <p id="totalInspections">0</p>
+                </div>
             </div>
             <div class="metric-box">
-                <h3>OK Count</h3>
-                <p id="okCount">0</p>
+                <div class="info-ok">
+                    <h3>OK Count</h3>
+                    <p id="okCount">0</p>
+                </div>
             </div>
             <div class="metric-box">
-                <h3>NG Count</h3>
-                <p id="ngCount">0</p>
+                <div class="info-ng">
+                    <h3>NG Count</h3>
+                    <p id="ngCount">0</p>
+                </div>
             </div>
             <div class="metric-box">
-                <h3>NG Rate</h3>
-                <p id="ngRate">0.00%</p>
+                <div class="info-rate">
+                    <h3>NG Rate</h3>
+                    <p id="ngRate">0.00%</p>
+                </div>
             </div>
         </div>
 
