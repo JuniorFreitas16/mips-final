@@ -16,6 +16,7 @@ function loadFilterOptions() {
             // Get unique values for each filter
             const models = [...new Set(inspections.map(i => i.model))];
             const partNumbers = [...new Set(inspections.map(i => i.part_number))];
+            const poCode = [...new Set(inspections.map(i => i.po_code))];
             const partTypes = [...new Set(inspections.map(i => i.part_type))];
             const defects = [...new Set(inspections.map(i => i.defect).filter(Boolean))];
             const vendors = [...new Set(inspections.map(i => i.vendor))];
@@ -23,6 +24,7 @@ function loadFilterOptions() {
             // Populate filter dropdowns
             populateSelect('modelFilter', models);
             populateSelect('partNumberFilter', partNumbers);
+            populateSelect('poFilter', poCode);
             populateSelect('partTypeFilter', partTypes);
             populateSelect('defectFilter', defects);
             populateSelect('vendorFilter', vendors);
@@ -51,6 +53,7 @@ function loadInspectionData() {
         endDate: document.getElementById("dateToFilterMaster").value,
         model: document.getElementById('modelFilter').value,
         partNumber: document.getElementById('partNumberFilter').value,
+        poCode: document.getElementById('poFilter').value,
         partType: document.getElementById('partTypeFilter').value,
         defect: document.getElementById('defectFilter').value,
         vendor: document.getElementById('vendorFilter').value,
@@ -75,6 +78,7 @@ function loadInspectionData() {
                      return dateFilter &&
                      (!filters.model || inspection.model === filters.model) &&
                      (!filters.partNumber || inspection.part_number === filters.partNumber) &&
+                     (!filters.poCode || inspection.po_code === filters.poCode) &&
                      (!filters.partType || inspection.part_type === filters.partType) &&
                      (!filters.defect || inspection.defect === filters.defect) &&
                      (!filters.vendor || inspection.vendor === filters.vendor) &&
@@ -110,6 +114,7 @@ function updateTable(inspections) {
             <td>${inspection.line}</td>
             <td>${inspection.vendor}</td>
             <td>${inspection.part_type}</td>
+            <td>${inspection.po_code}</td>
             <td>${inspection.serial_number}</td>
             <td>${inspection.status}</td>
             <td>${inspection.defect || ''}</td>
@@ -249,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadFilterOptions();
 
     // Add event listeners for filters
-    const filters = ['dateFromFilterMaster', 'dateToFilterMaster', 'modelFilter', 'partNumberFilter', 'partTypeFilter', 
+    const filters = ['dateFromFilterMaster', 'dateToFilterMaster', 'modelFilter', 'partNumberFilter', 'poFilter', 'partTypeFilter', 
                     'defectFilter', 'vendorFilter', 'serialNumberFilter'];
 
     filters.forEach(filterId => {
