@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mass Inspection</title>
+    <title>MASS INSPECTION</title>
     <link rel="stylesheet" href="inspection.css">
 </head>
 <body>
-    <h1>Mass Inspection</h1>
+    <h1>MASS INSPECTION</h1>
     <div class="container">
         <nav class="navigation">
           <ul>
@@ -15,14 +15,16 @@
             <li><a href="model-input.html">Model Input</a></li>
             <li><a href="mass-inspection-plan.html">Mass Inspection Plan</a></li>
             <li><a href="mass-inspection-plan-list.html">Mass Inspection Plan List</a></li>
-            <li><a href="inspection-dashboard.html">Inspection Dashboard</a></li>
+            <li><a href="specific-monitoring.html">Mass Inspection Real-Time Monitoring</a></li>
             <li><a href="master-data-page.html">Master Data</a></li>
-            <li><a href="specific-monitoring.html">Line Monitoring</a></li>
+            <li><a href="inspection-dashboard.html">Mass Inspection Dashboard</a></li>
           </ul>
         </nav>
         <div class="model-info">
+                <p><strong>Line:</strong> <span id="line-in-insp"></span></p>
                 <p><strong>Model:</strong> <span id="model-in-insp"></span></p>
                 <p><strong>Part Number:</strong> <span id="partnumber-in-insp"></span></p>
+                <p><strong>PO:</strong> <span id="po-in-insp"></span></p>
         </div>
 
         <div class="dashboard">
@@ -136,7 +138,6 @@
                     <th>Model</th>
                     <th>Line</th>
                     <th>Vendor</th>
-                    <th>PO</th>
                     <th>Part Type</th>
                     <th>Serial Number</th>
                     <th>Status</th>
