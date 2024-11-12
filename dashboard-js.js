@@ -566,5 +566,3 @@ function updateVendorChart(data) {
         };
     });
 });
-
-
