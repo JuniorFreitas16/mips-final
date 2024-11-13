@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     },
                     title: {
-                        display: true,
+                        display: false,
                         text: 'Top 5 Worst Defects',
                         font:{
                             size: 16
@@ -356,7 +356,7 @@ function updateVendorChart(data) {
                     }
                 },
                 title: {
-                    display: true,
+                    display: false,
                     text: 'Top 5 Worst Parts',
                     font:{
                         size: 16
@@ -420,7 +420,7 @@ function updateVendorChart(data) {
                         }
                     },
                     title: {
-                        display: true,
+                        display: false,
                         text: 'Top 5 Worst Zones',
                         font:{
                             size: 16
@@ -475,7 +475,7 @@ function updateVendorChart(data) {
                         align: "end"
                     },
                     title: {
-                        display: true,
+                        display: false,
                         text: 'Inspection Trend',
                         font:{
                             size: 16
