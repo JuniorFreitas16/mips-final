@@ -47,6 +47,11 @@ h1 {
     margin-bottom: 5px;
 }
 
+h3{
+  text-align: center;
+  color: #666;
+}
+
 nav {
     background-color: #0033a0;
     display:flex;
@@ -185,6 +190,7 @@ canvas {
   }
 
 #trendChart {
-  width: 100% !important;
-  height: 100% !important;
+  justify-self: center;
+  width: 1200px !important;
+  height: 400px !important;
 }
