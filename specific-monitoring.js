@@ -84,6 +84,7 @@ class SpecificMonitoringDashboard {
                 responsive: true,
                 plugins: {
                     legend: {
+                        display: false,
                         position: "top",
                         align: "center",
                         labels: {
